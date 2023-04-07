@@ -130,7 +130,7 @@ void create_single_compressed_diff(const unsigned char* newData,const unsigned c
                                    size_t patchStepMemSize=kDefaultPatchStepMemSize,
                                    bool isUseBigCacheMatch=false,
                                    ICoverLinesListener* listener=0,size_t threadNum=1);
-void create_single_compressed_diff(const unsigned char* newData,const unsigned char* newData_end,
+extern "C" __declspec(dllexport) void __cdecl create_single_compressed_diff(const unsigned char* newData,const unsigned char* newData_end,
                                    const unsigned char* oldData,const unsigned char* oldData_end,
                                    const hpatch_TStreamOutput* out_diff,const hdiff_TCompress* compressPlugin=0,
                                    int kMinSingleMatchScore=kMinSingleMatchScore_default,

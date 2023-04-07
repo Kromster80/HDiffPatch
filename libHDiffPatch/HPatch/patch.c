@@ -2011,13 +2011,13 @@ hpatch_BOOL patch_single_compressed_diff(const hpatch_TStreamOutput* out_newData
     if (compressedSize==0){
         decompressPlugin=0;
     }else{
-        if (decompressPlugin==0) return _hpatch_FALSE;
+        if (decompressPlugin==0) return _hpatch_FALSE + 108;
     }
     diffData_posEnd=(decompressPlugin?compressedSize:uncompressedSize)+diffData_pos;
-    if (diffData_posEnd>singleCompressedDiff->streamSize) return _hpatch_FALSE;
+    if (diffData_posEnd>singleCompressedDiff->streamSize) return _hpatch_FALSE + 109;
     if (decompressPlugin){
         if (!compressed_stream_as_uncompressed(&uncompressedStream,uncompressedSize,decompressPlugin,singleCompressedDiff,
-                                               diffData_pos,diffData_posEnd)) return _hpatch_FALSE;
+                                               diffData_pos,diffData_posEnd)) return _hpatch_FALSE + 110;
         singleCompressedDiff=&uncompressedStream.base;
         diffData_pos=0;
         diffData_posEnd=singleCompressedDiff->streamSize;
@@ -2211,7 +2211,7 @@ hpatch_BOOL patch_single_stream_diff(const hpatch_TStreamOutput*  out_newData,
     sspatch_covers_init(&covers);
     if (coversListener) assert(coversListener->onStepCovers);
     {//cache
-        if ((size_t)(temp_cache_end-temp_cache)<stepMemSize+hpatch_kStreamCacheSize*_kCacheSgCount) return _hpatch_FALSE;
+        if ((size_t)(temp_cache_end-temp_cache)<stepMemSize+hpatch_kStreamCacheSize*_kCacheSgCount) return _hpatch_FALSE + 111;
         temp_cache+=stepMemSize;
         cache_size=(temp_cache_end-temp_cache)/_kCacheSgCount;
         _TStreamCacheClip_init(&inClip,uncompressedDiffData,diffData_pos,diffData_posEnd,
@@ -2231,7 +2231,7 @@ hpatch_BOOL patch_single_stream_diff(const hpatch_TStreamOutput*  out_newData,
                 _clip_unpackUIntTo(&bufRle_size,&inClip);
                 #ifdef __RUN_MEM_SAFE_CHECK
                     if ((bufCover_size>stepMemSize)|(bufRle_size>stepMemSize)|
-                        (bufCover_size+bufRle_size>stepMemSize)) return _hpatch_FALSE;
+                        (bufCover_size+bufRle_size>stepMemSize)) return _hpatch_FALSE + 112;
                 #endif
                 covers_cacheEnd=step_cache+(size_t)bufCover_size;
                 bufRle_cache_end=covers_cacheEnd+(size_t)bufRle_size;
@@ -2239,7 +2239,7 @@ hpatch_BOOL patch_single_stream_diff(const hpatch_TStreamOutput*  out_newData,
             if (coversListener&&coversListener->onStepCoversReset)
                 coversListener->onStepCoversReset(coversListener,coverCount);
             if (!_TStreamCacheClip_readDataTo(&inClip,step_cache,bufRle_cache_end))
-                return _hpatch_FALSE;
+                return _hpatch_FALSE + 113;
             if (coversListener)
                 coversListener->onStepCovers(coversListener,step_cache,covers_cacheEnd);
             sspatch_covers_setCoversCache(&covers,step_cache,covers_cacheEnd);
@@ -2247,34 +2247,34 @@ hpatch_BOOL patch_single_stream_diff(const hpatch_TStreamOutput*  out_newData,
         }
         while (sspatch_covers_isHaveNextCover(&covers)) {//cover loop
             if (!sspatch_covers_nextCover(&covers)) 
-                return _hpatch_FALSE;
+                return _hpatch_FALSE + 114;
             if (covers.cover.newPos>covers.lastNewEnd){
                 if (!_TOutStreamCache_copyFromClip(&outCache,&inClip,covers.cover.newPos-covers.lastNewEnd))
-                    return _hpatch_FALSE;
+                    return _hpatch_FALSE + 115;
             }
             
             --coverCount;
             if (covers.cover.length){
                 #ifdef __RUN_MEM_SAFE_CHECK
                     if ((covers.cover.oldPos>oldData->streamSize)|
-                        (covers.cover.length>(hpatch_StreamPos_t)(oldData->streamSize-covers.cover.oldPos))) return _hpatch_FALSE;
+                        (covers.cover.length>(hpatch_StreamPos_t)(oldData->streamSize-covers.cover.oldPos))) return _hpatch_FALSE + 116;
                 #endif
                 if (!_patch_add_old_with_rle0(&outCache,&rle0_decoder,oldData,covers.cover.oldPos,covers.cover.length,
-                                              temp_cache,cache_size)) return _hpatch_FALSE;
+                                              temp_cache,cache_size)) return _hpatch_FALSE + 117;
             }else{
                 #ifdef __RUN_MEM_SAFE_CHECK
-                    if (coverCount!=0) return _hpatch_FALSE;
+                    if (coverCount!=0) return _hpatch_FALSE + 118;
                 #endif
             }
         }
     }
     
     if (!_TOutStreamCache_flush(&outCache))
-        return _hpatch_FALSE;
+        return _hpatch_FALSE + 119;
     if (_TStreamCacheClip_isFinish(&inClip)&_TOutStreamCache_isFinish(&outCache)&(coverCount==0))
         return hpatch_TRUE;
     else
-        return _hpatch_FALSE;
+        return _hpatch_FALSE + 110;
 }
 
 

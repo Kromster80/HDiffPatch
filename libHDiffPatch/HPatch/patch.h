@@ -176,7 +176,7 @@ static hpatch_inline hpatch_BOOL
 
 //get singleCompressedDiff info
 //  singleCompressedDiff create by create_single_compressed_diff() or create_single_compressed_diff_stream()
-hpatch_BOOL getSingleCompressedDiffInfo(hpatch_singleCompressedDiffInfo* out_diffInfo,
+__declspec(dllexport) hpatch_BOOL __cdecl getSingleCompressedDiffInfo(hpatch_singleCompressedDiffInfo* out_diffInfo,
                                         const hpatch_TStreamInput*  singleCompressedDiff,   //sequential read
                                         hpatch_StreamPos_t diffInfo_pos//default 0, begin pos in singleCompressedDiff
                                         );
@@ -196,7 +196,7 @@ hpatch_inline static hpatch_BOOL
 //  singleCompressedDiff create by create_single_compressed_diff() or create_single_compressed_diff_stream()
 //  decompressPlugin can null when no compressed data in singleCompressedDiff
 //  same as call compressed_stream_as_uncompressed() + patch_single_stream_diff()
-hpatch_BOOL patch_single_compressed_diff(const hpatch_TStreamOutput* out_newData,          //sequential write
+__declspec(dllexport) hpatch_BOOL __cdecl patch_single_compressed_diff(const hpatch_TStreamOutput * out_newData,          //sequential write
                                          const hpatch_TStreamInput*  oldData,              //random read
                                          const hpatch_TStreamInput*  singleCompressedDiff, //sequential read
                                          hpatch_StreamPos_t          diffData_pos, //diffData begin pos in singleCompressedDiff
