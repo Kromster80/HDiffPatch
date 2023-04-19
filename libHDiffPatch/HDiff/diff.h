@@ -145,7 +145,7 @@ extern "C" __declspec(dllexport) void __cdecl create_single_compressed_diff(cons
 //    if increase kMatchBlockSize then run faster and require less memory, but out_diff size increase
 //  NOTICE: out_diff->write()'s writeToPos may be back to update headData!
 //  throw std::runtime_error when I/O error,etc.
-void create_single_compressed_diff_stream(const hpatch_TStreamInput*  newData,
+extern "C" __declspec(dllexport) void __cdecl create_single_compressed_diff_stream(const hpatch_TStreamInput*  newData,
                                           const hpatch_TStreamInput*  oldData,
                                           const hpatch_TStreamOutput* out_diff,
                                           const hdiff_TCompress* compressPlugin=0,
